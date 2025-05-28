@@ -6,8 +6,8 @@
   --color-secondary: #fbbf24;
 }
 * {
-  font-family: Outfit;
+  font-family: "Outfit", sans-serif;
 }
 .font-playfair {
-  font-family: Playfair !important;
+  font-family: "Playfair" !important;
 }
