@@ -3,9 +3,41 @@ import { assets, facilityIcons, roomsDummyData } from "../assets/assets";
 import { useNavigate } from "react-router-dom";
 import StarRating from "../components/StarRating";
 
+const CheckBox = ({ label }) => {
+  return (
+    <label className="flex gap-3 items-center cursor-pointer mt-2 text-sm">
+      <input type="checkbox" disabled />
+      <span className="font-light select-none">{label}</span>
+    </label>
+  );
+};
+
+const RadioButton = ({ label }) => {
+  return (
+    <label className="flex gap-3 items-center cursor-pointer mt-2 text-sm">
+      <input type="radio" name="sortOption" disabled />
+      <span className="font-light select-none">{label}</span>
+    </label>
+  );
+};
+
 const AllRooms = () => {
   const navigate = useNavigate();
   const [openfilters, setOpenFilters] = useState(false);
+
+  const roomTypes = ["Single Bed", "Double Bed", "Luxury Room", "Family suite"];
+  const priceRanges = [
+    "0 to 500",
+    "500 to 1000",
+    "1000 to 2000",
+    "2000 to 3000",
+  ];
+  const sortOptions = [
+    "Price Low to High",
+    "Price High to Low",
+    "Newest first",
+  ];
+
   return (
     <div className="flex flex-col-reverse lg:flex-row items-start justify-between pt-28 md:pt-35 px-4 md:px-16 lg:px-24 xl:px-32">
       <div>
@@ -50,7 +82,6 @@ const AllRooms = () => {
                 <img src={assets.locationIcon} alt="location-icon" />
                 <span>{room.hotel.address}</span>
               </div>
-              {/* ---amanities */}
               <div className="flex flex-wrap items-center mt-3 mb-6 gap-4">
                 {room.amenities.map((item, index) => (
                   <div
@@ -66,7 +97,6 @@ const AllRooms = () => {
                   </div>
                 ))}
               </div>
-              {/* ---price */}
               <p className="text-xl font-medium text-gray-700">
                 ${room.pricePerNight}/night
               </p>
@@ -74,14 +104,50 @@ const AllRooms = () => {
           </div>
         ))}
       </div>
-      {/* --filters */}
       <div className="bg-white w-80 border border-gray-300 text-gray-600 max-lg:mb-8 min-lg:mt-16">
-        <div>
+        <div
+          className={`flex items-center justify-between px-5 py-2.5 min-lg:border-b border-gray-300 ${
+            openfilters && "border-b"
+          }`}
+        >
           <p className="font-medium text-base text-gray-800">FILTERS</p>
           <div className="text-xs cursor-pointer">
-            <span className="lg:hidden">HIDE</span>
-            <span className=" hidden lg:block">CLEAR</span>
+            <span
+              onClick={() => setOpenFilters(!openfilters)}
+              className="lg:hidden"
+            >
+              {openfilters ? "HIDE" : "SHOW"}
+            </span>
+            <span className="hidden lg:block cursor-pointer">CLEAR</span>
           </div>
+        </div>
+        <div
+          className={`${
+            openfilters ? "max-h-[500px]" : "max-h-0 lg:max-h-[500px]"
+          } overflow-hidden transition-max-height duration-700 ease-in-out`}
+        >
+          <div className="px-5 pt-5">
+            <p className="font-medium text-base text-gray-800 pb-2 ">
+              Popular Filters
+            </p>
+            {roomTypes.map((room, index) => (
+              <CheckBox key={index} label={room} />
+            ))}
+          </div>
+          <div className="px-5 pt-5">
+            <p className="font-medium text-base text-gray-800 pb-2 ">
+              Price Range
+            </p>
+            {priceRanges.map((range, index) => (
+              <CheckBox key={index} label={`$ ${range}`} />
+            ))}
+          </div>
+        </div>
+        <div className="px-5 pt-5">
+          <p className="font-medium text-base text-gray-800 pb-2 ">Sort By</p>
+          {sortOptions.map((option, index) => (
+            <RadioButton key={index} label={option} />
+          ))}
         </div>
       </div>
     </div>
